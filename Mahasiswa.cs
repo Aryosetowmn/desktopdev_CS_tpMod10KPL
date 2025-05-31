@@ -1,4 +1,4 @@
-﻿namespace tpmodul10_103022300114
+﻿namespace TpModul10_103022300114
 {
     public class Mahasiswa
     {

@@ -1,62 +1,64 @@
-﻿namespace tpmodul10_103022300114
-{
-    using Microsoft.AspNetCore.Mvc;
-    using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 
+namespace TpModul10_103022300114
+{
     [Route("api/[controller]")]
     [ApiController]
     public class MahasiswaController : ControllerBase
     {
-        // Static list supaya data tetap tersimpan selama aplikasi jalan
-        private static List<Mahasiswa> listMahasiswa = new List<Mahasiswa>
+        // Menyimpan data mahasiswa secara sementara selama aplikasi berjalan
+        private static List<Mahasiswa> _listMahasiswa = new List<Mahasiswa>
         {
             new Mahasiswa { Nama = "Aryoseto Wahyatma", Nim = "103022300114" },
             new Mahasiswa { Nama = "Lionel Messi", Nim = "10" },
             new Mahasiswa { Nama = "Cristiano Ronaldo", Nim = "7" }
         };
 
-        // GET /api/mahasiswa
+        // GET: /api/mahasiswa
         [HttpGet]
         public ActionResult<List<Mahasiswa>> GetAll()
         {
-            Console.WriteLine("Jumlah mahasiswa: " + listMahasiswa.Count);
-            return listMahasiswa;
+            Console.WriteLine("Jumlah mahasiswa: " + _listMahasiswa.Count);
+            return _listMahasiswa;
         }
 
-        // GET /api/mahasiswa/{index}
+        // GET: /api/mahasiswa/{index}
         [HttpGet("{index}")]
         public ActionResult<Mahasiswa> GetByIndex(int index)
         {
-            if (index < 0 || index >= listMahasiswa.Count)
+            if (index < 0 || index >= _listMahasiswa.Count)
             {
                 return NotFound(new { message = "Mahasiswa tidak ditemukan." });
             }
-            return listMahasiswa[index];
+
+            return _listMahasiswa[index];
         }
 
-        // POST /api/mahasiswa
+        // POST: /api/mahasiswa
         [HttpPost]
-        public ActionResult AddMahasiswa([FromBody] Mahasiswa mhs)
+        public ActionResult AddMahasiswa([FromBody] Mahasiswa mahasiswa)
         {
-            if (mhs == null || string.IsNullOrEmpty(mhs.Nama) || string.IsNullOrEmpty(mhs.Nim))
+            if (mahasiswa == null || string.IsNullOrEmpty(mahasiswa.Nama) || string.IsNullOrEmpty(mahasiswa.Nim))
             {
                 return BadRequest(new { message = "Data mahasiswa tidak valid." });
             }
 
-            listMahasiswa.Add(mhs);
+            _listMahasiswa.Add(mahasiswa);
             return Ok(new { message = "Mahasiswa berhasil ditambahkan." });
         }
 
-        // DELETE /api/mahasiswa/{index}
+        // DELETE: /api/mahasiswa/{index}
         [HttpDelete("{index}")]
         public ActionResult DeleteMahasiswa(int index)
         {
-            if (index < 0 || index >= listMahasiswa.Count)
+            if (index < 0 || index >= _listMahasiswa.Count)
             {
                 return NotFound(new { message = "Mahasiswa tidak ditemukan." });
             }
 
-            listMahasiswa.RemoveAt(index);
+            _listMahasiswa.RemoveAt(index);
             return Ok(new { message = "Mahasiswa berhasil dihapus." });
         }
     }

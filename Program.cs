@@ -1,25 +1,28 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Menambahkan service controller ke dalam container
 builder.Services.AddControllers();
+
+// Menambahkan tools dokumentasi API (Swagger)
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Konfigurasi middleware saat development
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// Tambahkan ini supaya aplikasi jalan lebih aman:
+// Middleware keamanan dan routing
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseAuthorization();
 
-// Map endpoint controller
+// Menghubungkan endpoint controller
 app.MapControllers();
 
+// Menjalankan aplikasi
 app.Run();
